@@ -1,0 +1,4 @@
+#:schedule:
+  rate:
+    every: ['10m', first_in: '0s']
+    class: RateWorker
