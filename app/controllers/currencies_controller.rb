@@ -2,7 +2,6 @@ class CurrenciesController < ApplicationController
   before_action :set_currency, only: [:show, :edit, :update, :destroy]
   before_action :set_last_rate, only: [:index]
 
-  after_action :broadcast, only: [:save]
   # GET /currencies
   # GET /currencies.json
 
@@ -17,7 +16,7 @@ class CurrenciesController < ApplicationController
   # GET /currencies/new
   def new
     @currency = Currency.new
-    @currencies = Currency.last(10)
+    @currencies = Currency.where('added_by = 1').last(10)
   end
 
   # GET /currencies/1/edit
@@ -66,9 +65,6 @@ class CurrenciesController < ApplicationController
   end
 
   private
-    def broadcast 
-      ActionCable.server.broadcast 'rate_notifications_channel', value: "<h2>#{@currency.value}</h2>"
-    end
     def set_last_rate
       @last_rate = Currency.last
     end

@@ -14,7 +14,6 @@ class RateWorker
 	include CurrenciesHelper
 	
 	def perform params=nil 
-		saveRateToDB
-		puts 'save!'
+		saveRateToDB getCurrentRateFromSite
 	end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_15_124113) do
+ActiveRecord::Schema.define(version: 2019_10_15_123251) do
 
   create_table "currencies", force: :cascade do |t|
     t.float "value"
