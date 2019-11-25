@@ -1,0 +1,22 @@
+<!-- Универсальный паршиал отображения ошибок валидации любой модели -->
+
+<% errors = model.errors %>
+
+
+<div id="flash_messages">
+  <% flash.each do |name, message| %>
+    <div class="alert alert-success">
+      <%= message %>
+    </div>
+  <% end %>
+  <% if errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% errors.full_messages.each do |message| %>
+           <% flash.now[:notice] = message %>
+              <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+  <% end %>
+</div>

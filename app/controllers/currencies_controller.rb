@@ -8,59 +8,31 @@ class CurrenciesController < ApplicationController
   def index
   end
 
-  # GET /currencies/1
-  # GET /currencies/1.json
-  def show
-  end
-
   # GET /currencies/new
   def new
     @currency = Currency.new
-    @currencies = Currency.where('added_by = 1').last(10)
-  end
-
-  # GET /currencies/1/edit
-  def edit
   end
 
   # POST /currencies
   # POST /currencies.json
   def create
     @currency = Currency.new(currency_params)
-
+    @currency.date = date_from_params(params, :date).in_time_zone('Moscow') unless params[:currency][:date].nil?
+    p @currency.date
     respond_to do |format|
       if @currency.save
-        format.html { redirect_to root_path, notice: 'Currency was successfully created.' }
-        format.json { render :show, status: :created, location: @currency }
+        format.html do 
+          flash.notice = 'Currency was successfully created.' 
+          redirect_to admin_path
+        end
+        format.js do 
+          flash.notice = 'Currency was successfully added' 
+          render template: '/currencies/rate-table.js', layout: false, content_type: 'text/javascript'
+        end
       else
         format.html { render :new }
-        format.json { render json: @currency.errors, status: :unprocessable_entity }
+        format.js { render action: 'new' }
       end
-    end
-  end
-
-
-  # PATCH/PUT /currencies/1
-  # PATCH/PUT /currencies/1.json
-  def update
-    respond_to do |format|
-      if @currency.update(currency_params)
-        format.html { redirect_to @currency, notice: 'Currency was successfully updated.' }
-        format.json { render :show, status: :ok, location: @currency }
-      else
-        format.html { render :edit }
-        format.json { render json: @currency.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /currencies/1
-  # DELETE /currencies/1.json
-  def destroy
-    @currency.destroy
-    respond_to do |format|
-      format.html { redirect_to currencies_url, notice: 'Currency was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
@@ -75,6 +47,13 @@ class CurrenciesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def currency_params
-      params.require(:currency).permit(:value, :added_by)
+      params.require(:currency).permit(:value, :added_by, :date)
     end
+
+  # Преобразование даты и времени в нормальный вид
+  def date_from_params(params, date_key)
+    date_keys = params.keys.select { |k| k.to_s.match?(date_key.to_s) }.sort
+    date_array = params.values_at(*date_keys).map(&:to_i)
+    Date.civil(*date_array)
+  end   
 end

@@ -10,14 +10,15 @@ redis_url = 'redis://localhost:6379/0'
 Sidekiq::Extensions.enable_delay!
 
 Sidekiq.configure_server do |config|
-	config.redis = {url: redis_url}
+	config.redis = { url: redis_url }
   config.on(:startup) do
-    Sidekiq.schedule = YAML.load_file(File.expand_path("#{Rails.root}/config/sidekiq.yml", __FILE__))
+    Sidekiq.schedule = YAML.load_file(File.expand_path("#{Rails.root}/config/sidekiq-scheduler.yml", __FILE__))
+    SidekiqScheduler::Scheduler.instance.dynamic = true
+    SidekiqScheduler::Scheduler.instance.dynamic_every = '5s'
     SidekiqScheduler::Scheduler.instance.reload_schedule!
-    p 'scheduler started!'
   end
 end
 
 Sidekiq.configure_client do |config|
-	config.redis = {url: redis_url}
+	config.redis = { url: redis_url }
 end

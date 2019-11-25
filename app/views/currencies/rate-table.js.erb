@@ -1,0 +1,2 @@
+$('#rate-table').html('<%= j render partial: "currencies/rate-table" %>');
+$('#rate-form').html('<%= j render partial: "currencies/form", locals: { currency: Currency.new } %>');

@@ -1,0 +1,8 @@
+rateSchedule:
+  every: ['2h', first_in: '10m']
+  class: RateWorker
+#stopAdminRate:
+#  every: '100s'
+#  class: AdminWorker
+#  dynamic: true
+#  enabled: true

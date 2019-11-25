@@ -1,12 +1,12 @@
 require 'sidekiq'
 require 'sidekiq-scheduler'
 
-class RateWorker
+class AdminWorker
 	include Sidekiq::Worker
 	include CurrenciesHelper
 	
 	def perform params=nil 
-		saveRateToDB getCurrentRateFromSite
-	end
+		p 'admin worker time:'
+		broadcast
+	end	
 end
-

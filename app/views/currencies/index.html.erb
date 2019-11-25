@@ -6,7 +6,8 @@
 		  	<div>
 		  	<div id='rate-value'>
 		  		<h2 class='text-center'>
-		  			<%= @last_rate.value %>
+		  			<% rate = getLastValidRate %>
+		  			<%= rate.nil? ? 0 : rate.value %> ₽
 		  		</h2>
 		  	</div>
 		</div>

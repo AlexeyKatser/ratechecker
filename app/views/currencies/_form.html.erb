@@ -1,17 +1,17 @@
-<%= form_with(model: currency, local: true) do |form| %>
-  <% if currency.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(currency.errors.count, "error") %> prohibited this currency from being saved:</h2>
-
-      <ul>
-      <% currency.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+<div class="container" id='rate-form'>
+	<%= render partial: 'partials/form_errors', locals: { model: currency } %>
+	<%= form_for currency, remote: true do |f| %>
+	  <div class="card-body">
+	  	<div class="form-group">Курс:
+	   	 	<%= f.number_field :value, class: 'form-control', placeholder: true, required: true, step: '0.0001', min: "0.0001", max: "10000" %>
+	    </div>	  	
+	    <div class="form-group">Действует до:
+	    	<%= f.datetime_select :date,  class: 'form-control', required: true %>
+	    </div>
+	    <%= f.hidden_field :added_by, value: 1 %>
+	  	<div class="actions mt-2">
+	    	<%= f.submit 'Добавить', class: 'btn btn-primary' %> или <%= link_to 'вернуться', root_path %>
+	  	</div>   	    
+	  </div>
+	<% end %>
+</div>

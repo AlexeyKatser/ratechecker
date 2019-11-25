@@ -1,0 +1,21 @@
+<div class="container mx-auto" id='rate-table'>
+	<table>
+		<caption>Last rates</caption>
+		<thead>
+			<tr>
+				<th class='rates__table_col1'>Added at</th>
+				<th class='rates__table_col2'>Value</th>
+				<th class='rates__table_col3'>Valid until</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% Currency.where('added_by = 1').last(10).each do |rate| %>
+				<tr>
+					<td><%= rate.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+					<td><%= rate.value %></td>
+					<td><%= rate.date.nil? ? '' : rate.date.strftime('%d.%m.%Y %H:%M') %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

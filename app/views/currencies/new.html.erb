@@ -1,40 +1,8 @@
 <div class="row justify-content-center h-100">
-	<div class="col-md-4 col-12 my-auto">
-		<div class="container">
-			<%= form_for @currency do |f| %>
-			  <div class="card-body">
-			  	<div class="md-form">
-			   	 	<%= f.number_field :value, class: 'form-control phone', placeholder: true, required: true, step: '0.0001' %>
-			    </div>	  	
-			    <%= f.hidden_field :added_by, value: 1 %>
-			  	<div class="actions mt-2">
-			    	<%= f.submit 'Сохранить', class: 'btn btn-primary' %> или <%= link_to 'вернуться', root_path %>
-			  	</div>   	    
-			  </div>
-			<% end %>
-		</div>
+	<div class="col-md-5 col-12 my-auto">
+		<%= render partial: 'form', locals: { currency: @currency } %>
 	</div>
-	<div class="col-md-4 col-12 my-auto">
-		<div class="container mx-auto">
-			<table>
-				<caption>Last rates</caption>
-				<thead>
-					<tr>
-						<th class='col1'>Time</th>
-						<th class='col2'>Value</th>
-						<th class='col3'>Type</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% @currencies.each do |rate| %>
-						<tr>
-							<td><%= rate.created_at.strftime('%d.%m.%Y %H:%M') %></td>
-							<td><%= rate.value %></td>
-							<td><%= rate.added_by == 1 ? 'admin' : 'auto' %></td>
-						</tr>
-					<% end %>
-				</tbody>
-			</table>
-		</div>
+	<div class="col-md-5 col-12 my-auto">
+		<%= render partial: 'rate-table'%>
 	</div>
 </div>
